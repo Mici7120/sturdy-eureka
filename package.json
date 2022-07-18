@@ -1,0 +1,31 @@
+{
+  "name": "sturdy-eureka",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/config/index.js",
+    "cliente": "npm start --prefix cliente",
+    "server": "nodemon src/config/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run cliente\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix cliente && npm run build --prefix cliente"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mici7120/sturdy-eureka.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mici7120/sturdy-eureka/issues"
+  },
+  "homepage": "https://github.com/Mici7120/sturdy-eureka#readme",
+  "dependencies": {
+    "concurrently": "^7.2.2",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.19"
+  }
+}
