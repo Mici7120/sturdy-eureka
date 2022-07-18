@@ -35,8 +35,8 @@ const main = () => {
       console.log('Base de datos conectada');
     });
   
-    app.listen(3001, () => {
-      console.log('Servidor escuchando puerto 3001');
+    app.listen(process.env.PORT || 5000, () => {
+      console.log('Servidor escuchando en puerto ' + process.env.PORT);
     });
   };
   
