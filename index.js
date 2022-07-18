@@ -7,13 +7,13 @@ const userRoutes = require('./src/routes/routes');
 
 // middlewares
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 // endpoints: A PARTIR DE EL COMANDO /user se van a enlistar todas las rutas que tienen logica
 // endpoints
 app.use('/user', userRoutes);
 
-// parse application/json
+// parse application/jsoncle
 app.use(bodyParser.json());
 
 if (process.env.NODE_ENV === 'production') {
