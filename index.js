@@ -1,34 +1,55 @@
 const express = require('express');
+const { auth, requiresAuth } = require('express-openid-connect');
 const app = express();
-const bodyParser = require('body-parser');
+
+const userRoutes = require('./src/routes/user.routes');
+const solicitudesRoutes = require('./src/routes/solicitudes.routes');
+const articulosRoutes = require('./src/routes/articulos.routes');
 
 const database = require('./src/config/database');
-const userRoutes = require('./src/routes/routes');
+
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  baseURL: 'http://localhost:3000',
+  clientID: 'ig5VsIV8xYQw8K9SGr8pO2QA5dY8B36d',
+  issuerBaseURL: 'https://dev-t2iyjewb.us.auth0.com',
+  secret: 'LONG_RANDOM_STRING'
+};
+
+app.use(auth(config));
+
+// req.oidc.isAuthenticated is provided from the auth router
+app.get('/', (req, res) => {
+  res.send(
+    req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out'
+  )
+});
+
+// The /profile route will show the user profile as JSON
+app.get('/profile', requiresAuth(), (req, res) => {
+  res.send(JSON.stringify(req.oidc.user, null, 2));
+});
+
+// Express will serve up production assets
+// like our main.js file, or main.css file!
+app.use('/', express.static('cliente/build'));
+
+const path = require('path');
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'cliente', 'build', 'index.html'));
+  console.log("cliente iniciado");
+});
 
 // middlewares
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // endpoints: A PARTIR DE EL COMANDO /user se van a enlistar todas las rutas que tienen logica
 // endpoints
 app.use('/user', userRoutes);
-
-// parse application/jsoncle
-app.use(bodyParser.json());
-
-//if (process.env.NODE_ENV === 'production') {
-  // Express will serve up production assets
-  // like our main.js file, or main.css file!
-  app.use(express.static('cliente/build'));
-
-  // Express will serve up the index.html file
-  // if it doesn't recognize the route
-  const path = require('path');
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'cliente', 'build', 'index.html'));
-  });
-  console.log("cliente iniciado");
-//}
+app.use('/solicitudes', solicitudesRoutes);
+app.use('/articulos', articulosRoutes);
 
 //ENCARGADO DE HACER LA CONEXION DEL SERVIDOR Y DE
 const main = () => {
@@ -36,12 +57,12 @@ const main = () => {
     if (err) throw err;
     console.log('Base de datos conectada');
   });
-  const PORT = process.env.PORT || 5000;
-  console.log(PORT);
-
+  const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
-    console.log('Servidor escuchando en puerto ' + PORT);
+    console.log('Servidor escuchando puerto ' + PORT);
   });
 };
 
 main();
+
+
