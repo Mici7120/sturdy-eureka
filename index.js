@@ -12,19 +12,21 @@ const config = {
   authRequired: false,
   auth0Logout: true,
   baseURL: 'http://localhost:3000',
-  clientID: 'ig5VsIV8xYQw8K9SGr8pO2QA5dY8B36d',
-  issuerBaseURL: 'https://dev-t2iyjewb.us.auth0.com',
+  clientID: 'qFBppnilvWboCnpZkoJIfsrs0Dw4aKGE',
+  issuerBaseURL: 'https://dev-r3tadgyd.us.auth0.com',
   secret: 'LONG_RANDOM_STRING'
 };
 
 app.use(auth(config));
 
 // req.oidc.isAuthenticated is provided from the auth router
+/*
 app.get('/', (req, res) => {
   res.send(
     req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out'
   )
 });
+*/
 
 // The /profile route will show the user profile as JSON
 app.get('/profile', requiresAuth(), (req, res) => {
@@ -38,7 +40,7 @@ app.use('/', express.static('cliente/build'));
 const path = require('path');
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'cliente', 'build', 'index.html'));
-  console.log("cliente iniciado");
+  //console.log("cliente iniciado");
 });
 
 // middlewares
