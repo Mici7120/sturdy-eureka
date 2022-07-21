@@ -11,7 +11,7 @@ const database = require('./src/config/database');
 const config = {
   authRequired: false,
   auth0Logout: true,
-  baseURL: 'http://localhost:3000',
+  baseURL: 'https://sturdy-eureka.herokuapp.com/',
   clientID: 'qFBppnilvWboCnpZkoJIfsrs0Dw4aKGE',
   issuerBaseURL: 'https://dev-r3tadgyd.us.auth0.com',
   secret: 'LONG_RANDOM_STRING'
